@@ -4,6 +4,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yakeru.mini_jira.user.User;
 import com.yakeru.mini_jira.user.UserRepository;
@@ -17,31 +18,36 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final OAuth2Utils oauth2Utils;
 
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest request) {
 
         OAuth2User oAuth2User = super.loadUser(request);
+        String registrationId = request.getClientRegistration().getRegistrationId();
 
-        String githubId = oAuth2User.getAttribute("id").toString();
-        String username = oAuth2User.getAttribute("login");
+        String providerId = oauth2Utils.extractId(oAuth2User, registrationId);
+        String username = oauth2Utils.extractUsername(oAuth2User, registrationId);
         String name = oAuth2User.getAttribute("name");
         String email = oAuth2User.getAttribute("email");
-        String avatarUrl = oAuth2User.getAttribute("avatar_url");
+        String avatarUrl = oauth2Utils.extractAvatarUrl(oAuth2User, registrationId);
 
-        User user = userRepository.findByGithubId(githubId)
+        User user = userRepository.findByProviderIdAndProvider(providerId, registrationId)
             .map(existing -> updateUser(existing, username, name, email, avatarUrl))
-            .orElseGet(() -> createUser(githubId, username, name, email, avatarUrl));
+            .orElseGet(() -> createUser(providerId, registrationId, username, name, email, avatarUrl));
 
         log.info("OAuth2 login: user={} id={}", username, user.getId());
 
         return oAuth2User;
     }
 
-    private User createUser(String githubId, String username, String name, String email, String avatarUrl) {
+    private User createUser(String providerId, String provider, String username, 
+        String name, String email, String avatarUrl) {
 
         User user = User.builder()
-            .githubId(githubId)
+            .providerId(providerId)
+            .provider(provider)
             .username(username)
             .name(name)
             .email(email)
@@ -60,5 +66,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return userRepository.save(existing);
     }
-
 }

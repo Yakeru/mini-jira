@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.yakeru.mini_jira.user.User;
 import com.yakeru.mini_jira.user.UserRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,9 +61,12 @@ public class JwtAuthFilter  extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT expired for request to {}", request.getRequestURI());
+        } catch (JwtException e) {
+            log.warn("Invalid JWT: {}", e.getMessage());
         } catch (Exception e) {
             log.warn("JWT validation failed: {}", e.getMessage());
-            // don't set authentication — Spring Security will return 401
         }
 
         filterChain.doFilter(request, response);

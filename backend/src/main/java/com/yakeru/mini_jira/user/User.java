@@ -31,8 +31,11 @@ public class User {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "github_id", nullable = false, unique = true, length = 50)
-    private String githubId;
+    @Column(name = "provider_id", nullable = false, unique = true, length = 50)
+    private String providerId;
+
+    @Column(nullable = false, length = 20)
+    private String provider;
 
     @Column(nullable = false, length = 100)
     private String username;
