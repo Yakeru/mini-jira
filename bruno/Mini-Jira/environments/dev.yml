@@ -1,0 +1,8 @@
+name: dev
+variables:
+  - name: base_url
+    value: http://localhost:8080
+  - name: token
+    value: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhNzJmMzFlZS0wOGMwLTQ3NGYtYjYwMi1mNGQ2OGNkZGY4MmIiLCJ1c2VybmFtZSI6Illha2VydSIsImlhdCI6MTc4MTgzMjgyOCwiZXhwIjoxNzgxOTE5MjI4fQ.H2hWTc9Xn1gjBn104xECAErE3NVrzn0yQ8VOQqHsScChzQ06mGUpUh4j036Lpw3eRkmTCaJvY6mwIihKZZSjug
+  - name: id
+    value: 42bd8027-e11b-4ff8-83a6-a6a6c07d2b61

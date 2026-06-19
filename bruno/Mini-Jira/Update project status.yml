@@ -1,0 +1,22 @@
+info:
+  name: Update project status
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: "{{base_url}}/api/projects/{{id}}/status?status=ARCHIVED"
+  params:
+    - name: status
+      value: ARCHIVED
+      type: query
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​
