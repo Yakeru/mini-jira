@@ -22,4 +22,6 @@ public interface  TaskRepository extends JpaRepository<Task, UUID> {
         AND t.status = :status
         """)
     List<Task> findByProjectIdAndStatus(@Param("projectId") UUID projectId, @Param("status")String status);
+
+    boolean existsByIdAndProjectId(UUID id, UUID projectId);
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.yakeru.mini_jira.comment.CommentNotFoundException;
 import com.yakeru.mini_jira.project.ProjectNotFoundException;
 import com.yakeru.mini_jira.task.TaskNotFoundException;
 
@@ -66,9 +67,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
         
-        log.error("Unexpected error", ex);
+        log.error("Unexpected error.", ex);
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ErrorResponse.of("An unexpected error occurred"));
+            .body(ErrorResponse.of("An unexpected error occurred."));
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCommentNotFound(CommentNotFoundException ex) {
+        
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(ex.getMessage()));
     }
 }

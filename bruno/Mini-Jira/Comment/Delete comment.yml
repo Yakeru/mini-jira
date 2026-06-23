@@ -1,0 +1,23 @@
+info:
+  name: Delete comment
+  type: http
+  seq: 3
+
+http:
+  method: DELETE
+  url: "{{base_url}}/api/projects/{{project_id}}/tasks/{{task_id}}/comments/{{comment_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "content": "Very useful comment !"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

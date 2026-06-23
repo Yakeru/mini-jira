@@ -8,3 +8,5 @@ variables:
     value: 42bd8027-e11b-4ff8-83a6-a6a6c07d2b61
   - name: task_id
     value: a0e96451-fecb-48c8-8af1-5d1f55a3c211
+  - name: comment_id
+    value: 1cf534d5-ae9a-48ba-9e04-e163c30b4575
