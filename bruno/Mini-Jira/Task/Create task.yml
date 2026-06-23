@@ -1,0 +1,27 @@
+info:
+  name: Create task
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/api/projects/42bd8027-e11b-4ff8-83a6-a6a6c07d2b61/tasks"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "This is a task !",
+        "description": "Very important task !!",
+        "priority": "HIGH",
+        "dueDate": "2027-12-31"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​

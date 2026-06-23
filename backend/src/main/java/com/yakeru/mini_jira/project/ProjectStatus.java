@@ -23,9 +23,9 @@ public sealed interface ProjectStatus permits ProjectStatus.Active, ProjectStatu
 
     default String toValue() {
         return switch (this) {
-            case Active status -> ACTIVE;
-            case Archived status -> ARCHIVED;
-            case Completed status -> COMPLETED;
+            case Active() -> ACTIVE;
+            case Archived() -> ARCHIVED;
+            case Completed() -> COMPLETED;
         };
     }
 }

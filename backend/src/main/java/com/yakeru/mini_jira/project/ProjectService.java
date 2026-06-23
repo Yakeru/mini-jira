@@ -57,9 +57,9 @@ public class ProjectService {
         ProjectStatus status = ProjectStatus.fromString(newStatus);
 
         String validatedStatus = switch (status) {
-            case ProjectStatus.Active stat -> ProjectStatus.ACTIVE;
-            case ProjectStatus.Archived stat -> ProjectStatus.ARCHIVED;
-            case ProjectStatus.Completed stat -> ProjectStatus.COMPLETED;
+            case ProjectStatus.Active() -> ProjectStatus.ACTIVE;
+            case ProjectStatus.Archived() -> ProjectStatus.ARCHIVED;
+            case ProjectStatus.Completed() -> ProjectStatus.COMPLETED;
         };
 
         project.setStatus(validatedStatus);

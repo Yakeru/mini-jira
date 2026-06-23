@@ -1,0 +1,21 @@
+info:
+  name: Change status (valid)
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: "{{base_url}}/api/projects/{{project_id}}/tasks/{{task_id}}/status?status=IN_PROGRESS"
+  params:
+    - name: status
+      value: IN_PROGRESS
+      type: query
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

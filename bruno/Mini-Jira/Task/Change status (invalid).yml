@@ -1,0 +1,22 @@
+info:
+  name: Change status (invalid)
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{base_url}}/api/projects/{{project_id}}/tasks/{{task_id}}/status?status=DONE"
+  params:
+    - name: status
+      value: DONE
+      type: query
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​

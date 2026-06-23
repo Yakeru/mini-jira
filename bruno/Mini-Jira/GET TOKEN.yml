@@ -1,0 +1,23 @@
+info:
+  name: GET TOKEN
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: look at the body
+  body:
+    type: text
+    data: |-
+      To get a JWT:
+      1. Open browser → http://localhost:8080/oauth2/authorization/github
+      2. Complete GitHub login
+      3. Copy token from callback URL: http://localhost:4200/auth/callback?token=<JWT>
+      4. Paste token into the dev environment "token" variable
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
