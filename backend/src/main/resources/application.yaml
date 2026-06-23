@@ -10,6 +10,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/devboard
     username: devboard
     password: devboard
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: true
   
   flyway:
     enabled: true
