@@ -1,0 +1,86 @@
+<div class="page">
+  @if (task() === undefined) {
+    <p class="state-msg">Loading…</p>
+  } @else {
+    <a class="back-link" [routerLink]="['/projects', task()!.projectId]">← Board</a>
+
+    <div class="layout">
+      <!-- Left: task details -->
+      <div class="task-panel">
+        <div class="task-header">
+          <h1>{{ task()!.title }}</h1>
+          <span class="priority" [class]="'priority-' + task()!.priority.toLowerCase()">
+            {{ task()!.priority }}
+          </span>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <select class="status-select" [value]="task()!.status" (change)="onStatusChange($event)">
+              @for (s of statuses; track s) {
+                <option [value]="s">{{ s | statusLabel }}</option>
+              }
+            </select>
+          </div>
+
+          @if (task()!.dueDate) {
+            <div class="meta-item">
+              <span class="meta-label">Due</span>
+              <span>{{ task()!.dueDate | date:'mediumDate' }}</span>
+            </div>
+          }
+        </div>
+
+        @if (task()!.description) {
+          <div class="description">
+            <h2>Description</h2>
+            <p>{{ task()!.description }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Right: comments -->
+      <div class="comments-panel">
+        <h2>Comments
+          @if (comments() !== undefined) {
+            <span class="comment-count">{{ comments()!.length }}</span>
+          }
+        </h2>
+
+        @if (comments() === undefined) {
+          <p class="state-msg">Loading…</p>
+        } @else {
+          <div class="comment-list">
+            @for (comment of comments()!; track comment.id) {
+              <div class="comment">
+                <div class="comment-header">
+                  <span class="comment-author">{{ comment.authorUsername }}</span>
+                  <span class="comment-date">{{ comment.createdAt | date:'MMM d, y' }}</span>
+                  @if (auth.currentUser()?.id === comment.authorId) {
+                    <button class="btn-delete" (click)="deleteComment(comment.id)">Delete</button>
+                  }
+                </div>
+                <p class="comment-content">{{ comment.content }}</p>
+              </div>
+            } @empty {
+              <p class="empty-comments">No comments yet. Be the first!</p>
+            }
+          </div>
+
+          <form class="comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+            <textarea
+              formControlName="content"
+              rows="3"
+              placeholder="Leave a comment…"
+            ></textarea>
+            <button type="submit" class="btn-primary"
+              [disabled]="commentForm.invalid">
+              Post
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  }
+</div>

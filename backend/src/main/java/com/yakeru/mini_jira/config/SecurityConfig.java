@@ -30,7 +30,7 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler oauth2SuccessHandler;
     private final JwtAuthFilter jwtAuthFilter;
 
-    @Value("${devboard.frontend.url}")
+    @Value("${mini-jira.frontend.url}")
     private String frontendUrl;
 
     @Bean

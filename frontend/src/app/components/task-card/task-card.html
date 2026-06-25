@@ -1,0 +1,19 @@
+<a class="task-card" [routerLink]="['/projects', task().projectId, 'tasks', task().id]">
+  <div class="card-top">
+    <span class="priority" [class]="'priority-' + task().priority.toLowerCase()">
+      {{ task().priority }}
+    </span>
+    @if (task().dueDate) {
+      <span class="due-date">{{ task().dueDate }}</span>
+    }
+  </div>
+
+  <p class="task-title">{{ task().title }}</p>
+
+  @if (task().assigneeId) {
+    <div class="assignee">
+      <span class="assignee-dot"></span>
+      Assigned
+    </div>
+  }
+</a>

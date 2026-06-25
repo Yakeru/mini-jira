@@ -1,0 +1,47 @@
+<div class="page">
+  <header class="page-header">
+    <a class="back-link" routerLink="/projects">← Projects</a>
+
+    @if (project()) {
+      <div class="project-info">
+        <h1>{{ project()!.name }}</h1>
+        @if (project()!.description) {
+          <p class="project-desc">{{ project()!.description }}</p>
+        }
+      </div>
+    }
+
+    <button class="btn-primary" (click)="showTaskModal.set(true)">+ New Task</button>
+  </header>
+
+  @if (tasks() === undefined) {
+    <p class="state-msg">Loading…</p>
+  } @else {
+    <div class="board">
+      @for (col of columns; track col.status) {
+        <div class="column">
+          <div class="column-header">
+            <span class="column-label">{{ col.label }}</span>
+            <span class="column-count">{{ tasksByStatus()[col.status].length }}</span>
+          </div>
+
+          <div class="column-cards">
+            @for (task of tasksByStatus()[col.status]; track task.id) {
+              <app-task-card [task]="task" />
+            } @empty {
+              <p class="empty-column">No tasks</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (showTaskModal()) {
+  <app-create-task-modal
+    [projectId]="projectId"
+    (taskCreated)="onTaskCreated($event)"
+    (cancelled)="showTaskModal.set(false)"
+  />
+}

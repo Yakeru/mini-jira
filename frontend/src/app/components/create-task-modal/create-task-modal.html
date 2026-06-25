@@ -1,0 +1,44 @@
+<div class="modal-backdrop" (click)="cancelled.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>New Task</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="title">Title <span class="required">*</span></label>
+        <input id="title" formControlName="title" placeholder="What needs to be done?" />
+        @if (form.controls.title.invalid && form.controls.title.touched) {
+          <span class="field-error">Title is required (max 200 characters)</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="task-desc">Description</label>
+        <textarea id="task-desc" formControlName="description" rows="3"
+          placeholder="Optional details…"></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="priority">Priority <span class="required">*</span></label>
+          <select id="priority" formControlName="priority">
+            @for (p of priorities; track p) {
+              <option [value]="p">{{ p }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="dueDate">Due date</label>
+          <input id="dueDate" type="date" formControlName="dueDate" />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="cancelled.emit()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || submitting()">
+          {{ submitting() ? 'Creating…' : 'Create Task' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE' | 'BLOCKED';
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TaskStatus;
+  priority: TaskPriority;
+  projectId: string;
+  reporterId: string;
+  assigneeId: string | null;
+  dueDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TaskRequest {
+  title: string;
+  description?: string;
+  priority: TaskPriority;
+  assigneeId?: string;
+  dueDate?: string;
+}
