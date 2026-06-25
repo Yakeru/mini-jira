@@ -7,19 +7,27 @@
     <div class="layout">
       <!-- Left: task details -->
       <div class="task-panel">
-        <div class="task-header">
-          <h1>{{ task()!.title }}</h1>
-          <span class="priority" [class]="'priority-' + task()!.priority.toLowerCase()">
-            {{ task()!.priority }}
-          </span>
-        </div>
+        <h1 class="task-title">{{ task()!.title }}</h1>
 
         <div class="meta-row">
           <div class="meta-item">
             <span class="meta-label">Status</span>
-            <select class="status-select" [value]="task()!.status" (change)="onStatusChange($event)">
+            <select class="field-select" (change)="onStatusChange($event)">
               @for (s of statuses; track s) {
-                <option [value]="s">{{ s | statusLabel }}</option>
+                <option [value]="s" [selected]="selectedStatus() === s" [disabled]="isStatusDisabled(s)">
+                  {{ s | statusLabel }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Priority</span>
+            <select class="field-select" (change)="onPriorityChange($event)">
+              @for (p of priorities; track p) {
+                <option [value]="p" [selected]="selectedPriority() === p">
+                  {{ p }}
+                </option>
               }
             </select>
           </div>
@@ -27,10 +35,19 @@
           @if (task()!.dueDate) {
             <div class="meta-item">
               <span class="meta-label">Due</span>
-              <span>{{ task()!.dueDate | date:'mediumDate' }}</span>
+              <span class="meta-value">{{ task()!.dueDate | date:'mediumDate' }}</span>
             </div>
           }
         </div>
+
+        @if (hasPendingChange()) {
+          <div class="save-bar">
+            <span class="save-hint">You have unsaved changes</span>
+            <button class="btn-save" [disabled]="submitting()" (click)="saveChanges()">
+              {{ submitting() ? 'Saving…' : 'Save changes' }}
+            </button>
+          </div>
+        }
 
         @if (task()!.description) {
           <div class="description">
@@ -69,15 +86,8 @@
           </div>
 
           <form class="comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
-            <textarea
-              formControlName="content"
-              rows="3"
-              placeholder="Leave a comment…"
-            ></textarea>
-            <button type="submit" class="btn-primary"
-              [disabled]="commentForm.invalid">
-              Post
-            </button>
+            <textarea formControlName="content" rows="3" placeholder="Leave a comment…"></textarea>
+            <button type="submit" class="btn-primary" [disabled]="commentForm.invalid">Post</button>
           </form>
         }
       </div>

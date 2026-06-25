@@ -54,6 +54,14 @@ private final TaskService taskService;
         );
     }
 
+    @PatchMapping("/{taskId}/priority")
+    public ResponseEntity<TaskResponse> updatePriority(@PathVariable UUID projectId, @PathVariable UUID taskId, @RequestParam String priority) {
+
+        return ResponseEntity.ok(
+            taskService.updatePriority(projectId, taskId, priority)
+        );
+    }
+
     @PatchMapping("/{taskId}/assign")
     public ResponseEntity<TaskResponse> assign(@PathVariable UUID projectId, @PathVariable UUID taskId, @RequestParam UUID assigneeId) {
         

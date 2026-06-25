@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
-import { Task, TaskRequest, TaskStatus } from '../models';
+import { Task, TaskPriority, TaskRequest, TaskStatus } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -27,6 +27,12 @@ export class TaskService {
   updateStatus(projectId: string, taskId: string, status: TaskStatus) {
     return this.http.patch<Task>(`${this.base(projectId)}/${taskId}/status`, null, {
       params: { status },
+    });
+  }
+
+  updatePriority(projectId: string, taskId: string, priority: TaskPriority) {
+    return this.http.patch<Task>(`${this.base(projectId)}/${taskId}/priority`, null, {
+      params: { priority },
     });
   }
 }

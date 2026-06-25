@@ -109,6 +109,16 @@ public class TaskService {
     }
 
     @Transactional
+    public TaskResponse updatePriority(UUID projectId, UUID taskId, String newPriority) {
+
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId)
+            .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        task.setPriority(TaskPriority.valueOf(newPriority.toUpperCase()).name());
+        return TaskResponse.from(taskRepository.save(task));
+    }
+
+    @Transactional
     public TaskResponse assign(UUID projectId, UUID taskId, UUID assigneeId) {
 
         Task task = taskRepository.findByIdAndProjectId(taskId, projectId)
