@@ -22,6 +22,7 @@ interface Column {
 export class ProjectDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly projectService = inject(ProjectService);
+  private readonly taskService = inject(TaskService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly projectId = this.route.snapshot.paramMap.get('id')!;
@@ -53,7 +54,7 @@ export class ProjectDetail {
       .pipe(takeUntilDestroyed())
       .subscribe(p => this.project.set(p));
 
-    inject(TaskService).getAll(this.projectId)
+    this.taskService.getAll(this.projectId)
       .pipe(takeUntilDestroyed())
       .subscribe(t => this.tasks.set(t));
   }
